@@ -27,7 +27,8 @@ services:
     # start up the web app image and map to localhost
     build: ./app
     restart: always
-    ports: [3000:3000]
+    # port forward to localhost
+    ports: [80:3000]
     # set variable for a db port
     environment:
       - DB_HOST=mongodb://db:27017/posts
@@ -42,11 +43,13 @@ services:
 * docker-compose up
 * Note: we can see "Your app is ready and listening on port 3000"
 
+![](docker-compose node_db.png)
+
 ## ensure all three pages work including /posts
 * All the below 3 pages working
-* http://localhost:3000/
-* http://localhost:3000/posts/
-* http://localhost:3000/fibonacci/3
+* http://localhost/
+* http://localhost/posts/
+* http://localhost/fibonacci/3
   
 ### create a volume to make data persistent
 ```
