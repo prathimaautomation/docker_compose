@@ -19,28 +19,39 @@ services:
     image: mongo
     restart: always
     ports: [27017:27017]
-  volume:
-     - ./mongod.conf:/etc/mongod.conf
-    
+    volumes:
+    - data-volume:/data/db
+    - ./mongod.conf:/etc/mongod.conf
 
   web:
     # start up the web app image and map to localhost
     build: ./app
     restart: always
-    # port forward to localhost
     ports: [80:3000]
     # set variable for a db port
     environment:
       - DB_HOST=mongodb://db:27017/posts
     depends_on:
       - db
-      # could also use links
+    volumes:
+    - ./app:/src/app
+    # could also use links
     # can run the seeds here if CMD doesn't work
-    volume:
-    - data-volume:/data/db
+     
+    
+volumes:
+  data-volume:
 ```
 ## docker-compose up or docker-compose up -d
-* docker-compose up
+```
+docker-compose up -d --build
+# to seed the db
+winpty docker exec -it $(docker ps -l --format "{{.ID}}") node seeds/seed.js
+# to check the volume 
+docker inspect -f '{{ .Mounts }}' <cotainerid>
+
+```
+
 * Note: we can see "Your app is ready and listening on port 3000"
 
  ![](docker-compose-node-db.png)
@@ -54,8 +65,20 @@ services:
 ### create a volume to make data persistent
 ```
 # Include the below in the docker-compose.yml 
-volume:
-     - ./mongod.conf:/etc/mongod.conf
+  db: 
+    volumes:
+    - data-volume:/data/db
+    - ./mongod.conf:/etc/mongod.conf
+  web:
+    volumes:
+    - ./app:/src/app
+    # could also use links
+    # can run the seeds here if CMD doesn't work
+     
+    
+volumes:
+  data-volume:
 ```
-
+### check the volume 
+`docker inspect -f '{{ .Mounts }}' <cotainerid>`
 

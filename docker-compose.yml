@@ -20,6 +20,8 @@ services:
       - DB_HOST=mongodb://db:27017/posts
     depends_on:
       - db
+    volumes:
+    - ./app:/src/app
     # could also use links
     # can run the seeds here if CMD doesn't work
      
