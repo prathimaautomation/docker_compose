@@ -6,9 +6,9 @@ services:
     image: mongo
     restart: always
     ports: [27017:27017]
-    volume:
+    volumes:
+    - data-volume:/data/db
     - ./mongod.conf:/etc/mongod.conf
-    
 
   web:
     # start up the web app image and map to localhost
@@ -20,9 +20,11 @@ services:
       - DB_HOST=mongodb://db:27017/posts
     depends_on:
       - db
-      # could also use links
+    # could also use links
     # can run the seeds here if CMD doesn't work
-    volume:
-    - data-volume:/data/db
-# volumes:
-#   data-volume:
+     
+    
+volumes:
+  data-volume:
+
+  

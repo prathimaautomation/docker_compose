@@ -43,7 +43,7 @@ services:
 * docker-compose up
 * Note: we can see "Your app is ready and listening on port 3000"
 
-![](docker-compose node_db.png)
+ ![](docker-compose-node-db.png)
 
 ## ensure all three pages work including /posts
 * All the below 3 pages working
